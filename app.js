@@ -1,14 +1,23 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var sassMiddleware = require('node-sass-middleware');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const sassMiddleware = require('node-sass-middleware');
+const mongoose = require('mongoose');
+const config = require('./config/config');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// routes
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+mongoose.Promise = global.Promise;
+mongoose.connect(config.dbConnect)
+  .then(() => console.log('mongoose connection successful'))
+  .catch(err => console.log(err));
+
+const app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,10 +33,11 @@ app.use(sassMiddleware({
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }));
-app.use(express.static(path.join(__dirname, 'client/build')));
 
-//app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+// app.use(express.static(path.join(__dirname, 'client/build')));
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
