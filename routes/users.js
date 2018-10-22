@@ -52,7 +52,8 @@ router.post('/signin', (req, res) => {
           // if user is found and password is right create a token
           const token = jwt.sign(user.toObject(), config.passportSecret);
           // return the information including token as JSON
-          res.status(200).json({token: 'JWT ' + token});
+          delete user.password;
+          res.status(200).json({token: token, user: user});
         } else {
           res.status(401).json({msg: 'Authentication failed.  Wrong password.'});
         }
@@ -61,11 +62,13 @@ router.post('/signin', (req, res) => {
   });
 });
 
-// sanity check method to make sure authentication is working
-router.post('/me', passport.authenticate('jwt', { session: false}), function(req, res) {
+/**
+ * Get user from token
+ */
+router.post('/auth', passport.authenticate('jwt', { session: false}), function(req, res) {
   const token = TokenHelper.getToken(req.headers);
   if (token) {
-    return res.json({success: true, msg: 'something', user: req.user});
+    return res.json({success: true, user: {userName: req.user.username, email: req.user.email, role: req.user.role}});
   } else {
     return res.status(403).send({success: false, msg: 'Unauthorized.'});
   }
