@@ -13,12 +13,14 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.3.0",
+    "moment": "^2.22.2",
     "mongoose": "^5.2.16",
     "morgan": "~1.9.0",
     "node-sass-middleware": "0.11.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "slug": "^0.9.2"
   },
   "devDependencies": {
     "node-sass": "^4.9.3",

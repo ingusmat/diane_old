@@ -10,6 +10,7 @@ const config = require('./config/config');
 // routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnect)
@@ -36,6 +37,7 @@ app.use(sassMiddleware({
 
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 
 // app.use(express.static(path.join(__dirname, 'client/build')));
 
